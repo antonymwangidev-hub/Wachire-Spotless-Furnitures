@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Wachira Spotless Furniture — base layer
+   ========================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-primary;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-primary;
+  }
+
+  /* Visible keyboard focus everywhere, never relying on color alone */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible {
+    outline: 2px solid theme("colors.accent.DEFAULT");
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+@layer components {
+  /* --- Layout ------------------------------------------------------------ */
+  .container-page {
+    @apply mx-auto w-full max-w-content px-6 sm:px-8 lg:px-10;
+  }
+
+  .section-eyebrow {
+    @apply inline-flex items-center gap-3 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-secondary;
+  }
+
+  .section-eyebrow::before {
+    content: "";
+    @apply block h-px w-8 bg-accent;
+  }
+
+  .section-heading {
+    @apply mt-3 text-3xl sm:text-4xl lg:text-[2.75rem] leading-tight text-primary;
+  }
+
+  /* --- Buttons ------------------------------------------------------------ */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-7 py-3.5 text-sm font-semibold tracking-wide uppercase transition-all duration-300 ease-signature;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-primary shadow-card hover:bg-accent-dark hover:shadow-lift hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply btn border border-cream/40 text-cream hover:bg-cream hover:text-primary hover:-translate-y-0.5;
+  }
+
+  .btn-outline-dark {
+    @apply btn border border-primary/25 text-primary hover:bg-primary hover:text-cream hover:-translate-y-0.5;
+  }
+
+  .btn-whatsapp {
+    @apply btn bg-whatsapp text-white shadow-card hover:brightness-110 hover:shadow-lift hover:-translate-y-0.5;
+  }
+
+  /* --- Growth-ring signature ---------------------------------------------
+     A carpenter reads a tree's age in its rings. We use the same concentric
+     mark as the badge behind every icon and process step: each ring is a
+     year in the workshop, each piece of furniture another ring added.     */
+  .ring-badge {
+    @apply relative grid place-items-center h-16 w-16 shrink-0;
+  }
+
+  .ring-badge svg.ring-badge__rings {
+    @apply absolute inset-0 h-full w-full text-accent/35;
+  }
+
+  .ring-badge__icon {
+    @apply relative z-10 text-primary;
+  }
+
+  /* --- Cards --------------------------------------------------------------*/
+  .card {
+    @apply bg-cream-50 rounded-sm shadow-card transition-all duration-300 ease-signature;
+  }
+
+  .card-hover:hover {
+    @apply shadow-card-hover -translate-y-1.5;
+  }
+
+  .tag-chip {
+    @apply inline-block rounded-full border border-secondary/30 bg-cream px-3 py-1 text-[0.7rem] font-medium tracking-wide text-secondary;
+  }
+
+  /* --- Nav ------------------------------------------------------------- */
+  .nav-link {
+    @apply relative text-sm font-medium text-primary/80 transition-colors duration-200 hover:text-primary;
+  }
+
+  .nav-link::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 ease-signature;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    @apply w-full;
+  }
+
+  /* --- Scroll reveal -------------------------------------------------------
+     Defined as real CSS (not toggled Tailwind utilities) so it works
+     regardless of what the JIT purge sees referenced in markup.          */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* --- Accordion (FAQ) ------------------------------------------------- */
+  .accordion-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .accordion-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+
+  .accordion-panel > div {
+    overflow: hidden;
+  }
+
+  /* --- Floating WhatsApp button ----------------------------------------- */
+  .whatsapp-fab {
+    @apply fixed bottom-6 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-whatsapp text-white shadow-lift transition-transform duration-300 ease-signature hover:scale-110;
+  }
+
+  .whatsapp-fab__ping {
+    @apply absolute inset-0 rounded-full bg-whatsapp;
+    animation: whatsapp-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .whatsapp-fab__ping {
+      animation: none;
+      display: none;
+    }
+  }
+
+  /* --- Nav scroll state --------------------------------------------------*/
+  .site-nav {
+    @apply fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-signature bg-cream/95 backdrop-blur;
+  }
+
+  .site-nav.is-scrolled {
+    @apply shadow-card bg-cream/95;
+  }
+
+  /* --- Gallery filter tabs ----------------------------------------------*/
+  .gallery-filter-btn {
+    @apply rounded-full border border-secondary/30 px-5 py-2 text-sm font-medium text-secondary transition-colors duration-200 hover:border-primary hover:text-primary;
+  }
+
+  .gallery-filter-btn.is-active {
+    @apply bg-primary border-primary text-cream hover:text-cream;
+  }
+
+  .gallery-item {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .gallery-item[hidden] {
+    display: none;
+  }
+
+  /* --- FAQ accordion ------------------------------------------------------*/
+  .faq-trigger {
+    @apply flex w-full items-center justify-between gap-4 py-5 text-left text-base sm:text-lg font-medium text-primary;
+  }
+
+  .faq-chevron {
+    @apply text-secondary transition-transform duration-300 ease-signature;
+  }
+
+  .faq-trigger[aria-expanded="true"] .faq-chevron {
+    @apply rotate-180 text-accent-dark;
+  }
+}
+
+@keyframes whatsapp-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  80%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

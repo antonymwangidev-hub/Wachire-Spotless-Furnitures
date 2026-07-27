@@ -1,0 +1,17 @@
+{
+  "name": "wachira-spotless-furniture",
+  "version": "1.0.0",
+  "description": "Marketing website for Wachira Spotless Furniture — a custom luxury furniture workshop in Kerugoya, Kenya.",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./input.css -o ./output.css --minify",
+    "watch": "tailwindcss -i ./input.css -o ./output.css --watch",
+    "serve": "python3 -m http.server 8080"
+  },
+  "keywords": ["furniture", "kenya", "landing-page"],
+  "author": "Nexus AI Enterprise",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
